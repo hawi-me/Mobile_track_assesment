@@ -16,7 +16,8 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   @override
   Future<List<ProductModel>> getProducts() async {
     final response = await client.get(
-      Uri.parse('https://g5-flutter-learning-path-be.onrender.com/api/v1/groceries'),
+      Uri.parse(
+          'https://g5-flutter-learning-path-be.onrender.com/api/v1/groceries'),
     );
 
     if (response.statusCode == 200) {
