@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/Features/grocery_products/domain/entites/grocery.dart';
 import 'package:ecommerce_app/Features/grocery_products/presentation/pages/grocery_details.dart';
 import 'package:flutter/material.dart';
 
@@ -10,6 +11,7 @@ class ProductCard extends StatelessWidget {
   final String oldPrice;
   final double newPrice;
   final String discription;
+  final List<Option> option1;
 
   const ProductCard({
     super.key,
@@ -18,7 +20,7 @@ class ProductCard extends StatelessWidget {
     required this.rating,
     required this.oldPrice,
     required this.newPrice,
-    required this.discription,
+    required this.discription, required this.option1,
   });
 
   @override
@@ -35,7 +37,7 @@ class ProductCard extends StatelessWidget {
               rating: rating,
               oldPrice: oldPrice,
               newPrice: newPrice,
-              description: discription,
+              description: discription, options1: option1,  
               // Add a description
             ),
           ),

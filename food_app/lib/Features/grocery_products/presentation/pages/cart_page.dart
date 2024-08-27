@@ -1,88 +1,114 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(
-    MaterialApp(
-      home: CartPage(),
-    ),
-  );
+class CartPage extends StatefulWidget {
+  final List<CartItem> cartItems;
+
+  CartPage({required this.cartItems});
+
+  @override
+  _CartPageState createState() => _CartPageState();
 }
 
-class CartPage extends StatelessWidget {
-  final List<CartItem> cartItems = [
-    CartItem(
-      imageUrl: 'assets/welcome.png',
-      foodName: 'Chicken Burger',
-      quantity: 2,
-      price: 6.00,
-    ),
-    CartItem(
-      imageUrl: 'assets/welcome.png',
-      foodName: 'Veggie Burger',
-      quantity: 1,
-      price: 5.00,
-    ),
-  ];
+class _CartPageState extends State<CartPage> {
+  void _removeItem(int index) {
+    setState(() {
+      widget.cartItems.removeAt(index);
+    });
+  }
+
+  void _increaseQuantity(int index) {
+    setState(() {
+      widget.cartItems[index].quantity++;
+    });
+  }
+
+  void _decreaseQuantity(int index) {
+    if (widget.cartItems[index].quantity > 1) {
+      setState(() {
+        widget.cartItems[index].quantity--;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    double totalPrice = cartItems.fold(
-      0.0,
-      (previousValue, item) => previousValue + (item.price * item.quantity),
-    );
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cart'),
-        centerTitle: true,
+        title: Text('My Basket'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: cartItems.length,
-                itemBuilder: (context, index) {
-                  final item = cartItems[index];
-                  return CartItemWidget(
-                    imageUrl: item.imageUrl,
-                    foodName: item.foodName,
-                    quantity: item.quantity,
-                    price: item.price,
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Total Price:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  '\$${totalPrice.toStringAsFixed(2)}',
-                  style: TextStyle(fontSize: 18, color: Colors.red),
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle checkout action
-                },
-                child: Text('Checkout', style: TextStyle(fontSize: 18)),
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Order Summary'),
+              ElevatedButton(
+                onPressed: () {},
+                child: Text('Add Items'),
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 12),
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.red,
                 ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+          Expanded(
+            child: widget.cartItems.isEmpty
+                ? Center(child: Text('Your cart is empty'))
+                : ListView.builder(
+                    itemCount: widget.cartItems.length,
+                    itemBuilder: (context, index) {
+                      final item = widget.cartItems[index];
+                      return Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          Card(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 16),
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(16),
+                              leading: Image.network(item.imageUrl,
+                                  width: 50, height: 50, fit: BoxFit.cover),
+                              title: Text(item.foodName),
+                              subtitle:
+                                  Text('\$${item.price} x ${item.quantity}'),
+                              trailing: Text('\$${item.price * item.quantity}'),
+                            ),
+                          ),
+                          Positioned(
+                            top: -10,
+                            right: -10,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.cancel, color: Colors.black),
+                                  onPressed: () => _removeItem(index),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            width: -5,
+                            height: -5,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.add, color: Colors.green),
+                                  onPressed: () => _increaseQuantity(index),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.remove, color: Colors.red),
+                                  onPressed: () => _decreaseQuantity(index),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+          ),
+        ],
       ),
     );
   }
@@ -91,47 +117,13 @@ class CartPage extends StatelessWidget {
 class CartItem {
   final String imageUrl;
   final String foodName;
-  final int quantity;
   final double price;
+  int quantity;
 
   CartItem({
     required this.imageUrl,
     required this.foodName,
-    required this.quantity,
     required this.price,
-  });
-}
-
-class CartItemWidget extends StatelessWidget {
-  final String imageUrl;
-  final String foodName;
-  final int quantity;
-  final double price;
-
-  const CartItemWidget({
-    super.key,
-    required this.imageUrl,
-    required this.foodName,
     required this.quantity,
-    required this.price,
   });
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: ListTile(
-        leading: Image.asset(
-          imageUrl,
-          width: 60,
-          height: 60,
-          fit: BoxFit.cover,
-        ),
-        title: Text(foodName),
-        subtitle: Text('Price: \$${price.toStringAsFixed(2)}'),
-        trailing: Text('Qty: $quantity'),
-      ),
-    );
-  }
 }

@@ -141,7 +141,9 @@ class _HomePageState extends State<HomePage> {
                           rating: product.rating,
                           oldPrice: '10',
                           newPrice: product.price,
-                          discription: product.description,
+                          discription: product.description,  option1: product.options,
+                          
+                          
                         );
                       },
                     );
