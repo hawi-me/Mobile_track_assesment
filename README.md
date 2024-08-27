@@ -3,3 +3,4 @@
 ![photo_3_2024-08-27_19-36-08](https://github.com/user-attachments/assets/3ef27ee6-9b90-4d78-bc7b-42fd1d2a152b)
 ![photo_4_2024-08-27_19-36-08](https://github.com/user-attachments/assets/ea08e20b-ddf8-4ad4-b6c1-683f4529fd77)
 ![photo_5_2024-08-27_19-36-08](https://github.com/user-attachments/assets/99169b9d-829b-4dfa-bbb9-23dddf9aa19d)
+![photo_1_2024-08-27_19-36-08](https://github.com/user-attachments/assets/32b767e9-bd74-466e-a722-04345ce4fa46)
